@@ -17,6 +17,10 @@ export const handler = async (event) => {
     const { message } = JSON.parse(event.body);
     const apiKey = process.env.GEMINI_API_KEY;
 
+    if (!apiKey) {
+      return { statusCode: 500, headers: corsHeaders, body: JSON.stringify({ error: 'GEMINI_API_KEY not set' }) };
+    }
+
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
